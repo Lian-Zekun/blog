@@ -1,0 +1,20 @@
+.post {
+    padding: 25px 0px 15px;
+}
+
+.post .post-title {
+    color: rgb(85, 85, 85);
+    text-align: left;
+    margin: 0px;
+    font: bold 20px / 1.1 ff-tisa-web-pro, Cambria, "Times New Roman", Georgia, Times, sans-serif;
+}
+
+.post .post-content {
+    clear: left;
+    font-size: 15px;
+    line-height: 1.77;
+    color: rgb(68, 68, 68);
+    padding-top: 15px;
+    text-align: justify;
+    word-break: break-all;
+}

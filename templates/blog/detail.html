@@ -1,0 +1,282 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load cache %}
+
+{% block title %}{{ article.title }}{% endblock title %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/md.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/detail.css' %}">
+<link rel="stylesheet" href="{% static 'css/prism.css' %}">
+{% endblock head %}
+
+{% block progress %}
+<progress value="0">
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+</progress>
+{% endblock progress %}
+
+{% block content %}
+<nav class="navbar navbar-light d-md-none">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebar"
+            aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-book" style="font-size: xx-large"></i>
+    </button>
+</nav>
+{% if article.toc %}
+{% cache 86400 toc %}
+<div class="col-md-2 offset-md-1 sidebar" id="sidebar">
+    <div class="sidebar__inner">
+        <h4>目录</h4>
+        <hr>
+        <div>
+            {{ article.toc|safe }}
+        </div>
+    </div>
+</div>
+{% endcache %}
+{% endif %}
+
+{% if article.toc %}
+<div class="col-md-8">
+{% else %}
+<div class="col-md-8 offset-md-2">
+{% endif %}
+    {% cache 86400 article %}
+    <div id="art_content">
+        <article>
+            <div class="container center_content">
+                <div class="stitle">
+                    <h2>{{ article.title }}</h2>
+                    <span>
+                        <i class="fas fa-eye" style="color: #444;"></i>&nbsp;{{ article.read_num }}&nbsp;&nbsp;
+                        <i class="far fa-clock"></i>&nbsp;{{ article.publish_time|date:'Y-m-d H:i:s' }}
+                    </span>
+                </div>
+                <div id="nav">
+                    <span>您现在的位置是&gt;</span>
+                    <a href="/">首页</a>&gt;
+                    <a href="{% url 'blog:category' article.category.name %}">{{ article.category.name }}</a>>
+                    <a href="#">{{ article.title }}</a>
+                    {% if tags %}
+                    <ul class="widget-list">
+                        {% for tag in tags%}
+                        <li class="widget-list-item" style="display: inline-block; margin-right: 5px;">
+                            <a class="widget-list-link hvr-forward no-underline"
+                               href="{% url 'blog:tag' tag.name %}"><i class="fas fa-tag"></i>&nbsp;{{ tag.name }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                <div class="detail_content">{{ article.html_content|safe }}</div>
+            </div>
+        </article>
+
+        <div style="font-size: 14px, color: #444">最后更新：{{ article.modified_time }}</div>
+
+        <div class="pages">
+            {% if next_article %}
+            <a href="{{ next_article.get_absolute_url }}"
+               class="prev"
+            >
+                上一章
+            </a>
+            {% endif %}
+            {% if pre_article %}
+            <a href="{{ pre_article.get_absolute_url }}"
+               class="next"
+            >
+                下一章
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- 发表评论 -->
+    <hr style="margin-top: 50px">
+    {% if user.is_authenticated %}
+    <div>
+        <form id="comment_form" action="{% url 'comment:post_comment' article.id %}" method="post">
+            <div>
+                {% csrf_token %}
+                <h5>
+                    发表评论：
+                </h5>
+                <!-- ckeditor 正文 -->
+                <div>
+                    {{ comment_form.media }}
+                    {{ comment_form.content }}
+                </div>
+            </div>
+
+            <input type="hidden" name="article_type" value=article>
+            <button id="comment_submit" type="submit" name="submit" hidden></button>
+        </form>
+        <div id="on_submit_outer" class="mt-2">
+            <button class="btn btn-primary hvr-icon-bob" onclick="submit_comment()"
+                    id="on_submit"><i class="fas fa-paper-plane hvr-icon"></i> 发布
+            </button>
+            <span id="comment_char_count" class="text-muted ml-2"></span>
+        </div>
+    </div>
+    <br>
+    {% else %}
+    <div style="text-align: center">
+        <div>
+            <h5 class="text-muted" id="githublogin">
+                登录后回复
+            </h5>
+            <div style="text-align: center" class="container-fluid mb-4">
+                <div>
+                    <a href="/accounts/github/login/?process=login&next={{ request.path }}" id="github_a"
+                    data-toggle="popover" data-placement="bottom"
+                    data-trigger="hover" data-content="以GitHub账号登录"
+                    >
+                        <i class="fab fa-github" style="font-size: 3em; color: dimgray;"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endcache %}
+
+    {% load mptt_tags %}
+    <h5 id="Fcomments" class="mt-4 alert alert-info">共有{{ comments.count }}条评论</h5>
+    <div class="mb-2" id="comments_body" style="word-break: break-all">
+        <div>
+            <hr>
+            <!-- 遍历树形结构 -->
+            {% recursetree comments %}
+            <!-- 给 node 取个别名 comment -->
+            {% with comment=node %}
+            <div class="row no-gutters" id="comment_{{ comment.id }}">
+                <div class="col-2 col-sm-1">
+                    <div style="text-align: center">
+                        <img src="{{ comment.user.socialaccount_set.all.0.get_avatar_url }}"
+                             alt="avatar" style="width: 60%; border-radius: 20%"/>
+                    </div>
+                </div>
+
+                <div class="col-10 col-sm-11">
+                    <div style="color: gray;">
+                        <span style="font-weight: bold;">{{ comment.user }}</span>
+                        {% if comment.user.is_superuser %}
+                        <i style="color: #ff5500;">[博主]</i>
+                        {% endif %}
+                        {% if comment.reply_to %}
+                        <i class="far fa-arrow-alt-circle-right" style="color: cornflowerblue;"></i>
+                        <span style="font-weight: bold;">{{ comment.reply_to }}</span>
+                        {% endif %}
+                        {% if comment.user.id == user.id or user.is_superuser %}
+                        <a href="javascript:;" class="hvr-grow-rotate no-underline" style="color: red"
+                           data-toggle="modal" data-target="#delete_comment_{{ comment.id }}">
+                            删除
+                        </a>
+                        {% endif %}
+                    </div>
+
+                    <div class="modal fade" id="delete_comment_{{ comment.id }}" tabindex="-1" role="dialog"
+                         aria-labelledby="logout"
+                         style="display: none;" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <h5 class="modal-body">
+                                    确认删除该评论吗？
+                                </h5>
+                                <div class="modal-footer">
+                                    <form method="get"
+                                          action="{% url 'comment:delete_comment' article.id comment.id %}">
+                                        <button type="submit" class="btn btn-danger">删除</button>
+                                    </form>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">返回</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 正文 -->
+                    {% if comment.content %}
+                    <div id="comment_body_div">
+                        <div class="comment-hidden" id="comment_body_{{ comment.id }}" style="max-height: 500px;">
+                            <p class="mt-3 mb-1"></p>
+                            <p>{{ comment.content|safe }}</p>
+                            <p></p>
+                        </div>
+                        <div class="text-center link_elem_{{ comment.id }}" id="gradient_layer"
+                             style="display: none;">
+                            <a href="javascript:;" onclick="unfoldContent({{ comment.id }})" id="unfold_link"
+                               style="font-size: 1.1em; position: relative; top: 80px;">
+                                展开内容..
+                            </a>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div style="text-align: center;" class="alert alert-danger">
+                        本评论已被 {{ comment.user }} 删除
+                    </div>
+                    {% endif %}
+
+                    <!-- 附加信息 -->
+                    <div style="color: #999999;">
+                        <p>{{ comment.publish_time|date:"Y-m-d H:i" }}
+                            {% if user.is_authenticated %}
+                            <a href="{% url 'comment:reply_comment' article.id comment.id %}"
+                               class="hvr-grow-rotate no-underline" style="color: #01a252"
+                            >
+                                回复
+                            </a>
+                            {% else %}
+                            <a class="btn btn-light btn-sm text-muted"
+                               href="/accounts/github/login/?process=login&next={{ request.path }}#comment_{{ comment.id }}"
+                               data-toggle="popover" data-placement="right"
+                               data-trigger="hover" data-content="以GitHub账号登录回复"
+                            >
+                                回复
+                            </a>
+                            {% endif %}
+
+                            <!-- 删除/编辑 -->
+
+                        </p>
+                    </div>
+
+                    {% if not comment.is_leaf_node %}
+                    <a class="btn btn-outline-secondary collapsed" data-toggle="collapse"
+                       href="#collapse_{{ comment.id }}"
+                       role="button" aria-expanded="false" aria-controls="collapse_{{ comment.id }}"
+                       onclick="onUnfoldContent(this, {{ comment.id }})" id="collapse_link">
+                        展开此讨论..
+                    </a>
+                    {% endif %}
+
+                    {% if not comment.is_leaf_node %}
+                    <div class="collapse" id="collapse_{{ comment.id }}" style="">
+                        <div class="card card-body">
+                            <div class="children">
+                                {{ children }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                </div>
+            </div>
+            {% endwith %}
+            {% endrecursetree %}
+        </div>
+    </div>
+
+
+</div>
+    {% endblock content %}
+
+    {% block script %}
+    <script src="{% static 'js/jquery.sticky-sidebar.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'ckeditor/ckeditor/plugins/prism/lib/prism/prism_patched.min.js' %} type="text/javascript""></script>
+    <script src="{% static 'js/detail.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/check_comment.js' %}" type="text/javascript"></script>
+    {% endblock script %}

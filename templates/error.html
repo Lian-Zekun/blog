@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load blog_extras %}
+{% load cache %}
+
+{% block title %}{{ status }}{% endblock title %}
+
+{% block content %}
+{% cache 86400 error %}
+<div class="col" style="text-align: center">
+    <br><br><br>
+    <i class="fas fa-exclamation-triangle mb-4" style="font-size: 8em"></i>
+    <h3>你要找的页面走丢了...</h3>
+    <h5>点击<a href="/article/list/" style="color: #01a252">首页</a>看看别的精彩内容吧~</h5>
+</div>
+{% endcache %}
+{% endblock content %}

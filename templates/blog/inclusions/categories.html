@@ -1,0 +1,13 @@
+<div class="widget">
+    <div class="widget-title"><i class="fas fa-folder"></i>&nbsp;&nbsp;分类</div>
+    <ul class="widget-list">
+        {% for category in categories %}
+        <li class="widget-list-item">
+            <a class="widget-list-link hvr-forward no-underline"
+               href="{% url 'blog:category' category.name %}">
+                {{ category.name }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load notifications_tags %}
+{% load cache %}
+{% notifications_unread as unread_count %}
+
+{% block title %}通知{% endblock title %}
+
+{% block content %}
+{% cache 86400 notices %}
+{% if not read_notices and not unread_notices %}
+<div class="col-md-7 offset-md-1">
+    <h3>还没有通知，快去<a href="/">主页</a>看看吧</h3>
+</div>
+{% else %}
+<div class="col-md-7 offset-md-1" id="notice_list">
+    {% if unread_notices %}
+    <div class="row">
+        <a href="{% url 'notice:update' %}" class="btn btn-warning" role="button">清空未读所有通知</a>
+    </div>
+    <!-- 未读通知列表 -->
+    <h3>未读列表</h3>
+    <div class="row list">
+        <ul class="list-group">
+            {% for unread_notice in unread_notices %}
+            <li class="list-group-item" id="notice_link unread">
+                <a href="{% url 'notice:update' %}?article_id={{ unread_notice.target.id }}&notice_id={{ unread_notice.id }}#comment_{{ unread_notice.action_object.id }}"
+                   target="_blank"
+                >
+                    <span style="color: #5897fb;">
+                        {{ unread_notice.actor }}
+                    </span>
+                    在 <span style="color: #01a252;">{{ unread_notice.target }}</span> {{ unread_notice.verb }}。
+                </a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ unread_notice.timesince }}前
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <h3>已读列表</h3>
+    <div class="row list">
+        <ul class="list-group">
+            {% for read_notice in read_notices %}
+            <li class="list-group-item" id="notice_link read">
+                <a href="{% url 'blog:article' read_notice.target.id %}#comment_{{ read_notice.action_object.id }}"
+                   target="_blank"
+                >
+                    <span style="color: #5897fb;">
+                        {{ read_notice.actor }}
+                    </span>
+                    在 <span style="color: #01a252;">{{ read_notice.target }}</span> {{ read_notice.verb }}。
+                </a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ read_notice.timesince }}前
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endif %}
+
+{% include '../blog/sidebar.html' %}
+
+<style>
+    #notice_link a:link {
+        color: black;
+    }
+
+    #notice_link a:visited {
+        color: lightgrey;
+    }
+
+</style>
+{% endcache %}
+{% endblock content %}

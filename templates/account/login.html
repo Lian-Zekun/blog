@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block title %}登录{% endblock %}
+
+{% block content %}
+<div class="col-12 col-md-10 col-lg-8 col-xl-7 offset-md-1 col-9">
+    <br>
+
+    {% get_providers as socialaccount_providers %}
+
+    {% if socialaccount_providers %}
+    <div class="socialaccount_ballot">
+        <h4 class="alert alert-info" style="text-align: center">第三方登录</h4>
+        <ul class="socialaccount_providers" style="list-style: none">
+            {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+        </ul>
+    </div>
+
+    {% include "socialaccount/snippets/login_extra.html" %}
+    {% endif %}
+</div>
+
+{% include '../blog/sidebar.html' %}
+
+{% endblock content %}

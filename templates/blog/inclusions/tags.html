@@ -1,0 +1,14 @@
+<div class="widget">
+    <div class="widget-title"><i class="fas fa-tags"></i>&nbsp;&nbsp;标签</div>
+    <ul class="widget-list">
+        {% for tag in tags %}
+        <li class="widget-list-item" style="display: inline-block; margin-right: 5px;">
+            <a class="widget-list-link hvr-forward no-underline"
+               href="{% url 'blog:tag' tag.name %}">
+                {{ tag.name }}
+                <span class="widget-list-count">{{ tag.article_count }}</span>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>

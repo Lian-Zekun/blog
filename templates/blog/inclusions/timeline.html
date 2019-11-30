@@ -1,0 +1,26 @@
+<ul class="timeline">
+    {% for article in articles %}
+    <li>
+        <div class="row">
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3">
+                <time class="tmtime">
+                    <span>{{ article.publish_time|date:"Y m d" }}</span>
+                    <span>{{ article.publish_time|time:"H:i:s" }}</span>
+                </time>
+                <div class="tmicon"></div>
+            </div>
+            <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9">
+                <div class="tmlabel">
+                    <h3><a href="{% url 'blog:article' article.id %}">{{ article.title }}</a></h3>
+                    <div class="row">
+                        <img src="/media/{{ article.pic }}" class="col-sm-4 img-responsive blogpic">
+                        <div class="col-sm-8">'
+                            {{ article.excerpt }}...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>

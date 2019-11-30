@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load blog_extras %}
+
+{% block title %}
+{% if title %}
+    {{ title }}
+{% else %}
+    廉泽昆的博客
+{% endif %}
+{% endblock title %}
+
+{% block content %}
+<div class="col-12 col-md-10 col-lg-8 col-xl-7 offset-md-1">
+    <ul class="timeline"></ul>
+
+    <div class="pages">
+        <a href="javascript:;" class="extend prev" rel="prev">上一页</a>
+        <a href="javascript:;" class="extend next" rel="next">下一页</a>
+    </div>
+</div>
+
+{% include './sidebar.html' %}
+
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'js/ajax.js' %}" type="text/javascript"></script>
+{% endblock script %}

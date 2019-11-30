@@ -1,0 +1,159 @@
+a, a:visited{
+    color: #444;
+    text-decoration:none;
+}
+
+a:hover, a:active{
+    color: #555;
+    text-decoration:underline;
+}
+
+h1,h2,h3,h4,h5,h6,h7{color: #444}
+
+/*粘性侧边栏*/
+.sidebar{
+    will-change: min-height;
+    padding-top: 40px;
+}
+
+.sidebar__inner{
+    transform: translate(0, 0); /* For browsers don't support translate3d. */
+    transform: translate3d(0, 0, 0);
+    will-change: position, transform;
+}
+
+.sidebar h4{
+    color: #444;
+    text-align: center;
+}
+
+.toc ul {
+	list-style: none;
+	overflow: auto;
+	padding-inline-start: 20px;
+}
+
+.toc a {
+    color: #555;
+    text-decoration: none;
+}
+
+p{
+    margin: 0 0 16px;
+    line-height: 26px;
+}
+
+/*主界面*/
+.center_content{
+    overflow: auto;
+    padding-top: 20px;
+}
+
+.center_content .widget-list{
+    margin-bottom: 0;
+}
+
+.center_content .stitle{
+    display: flex;
+    justify-content: space-between;
+}
+.center_content .stitle h2{
+    font-size: 35px;
+    color: #444;
+}
+
+.center_content .stitle span{
+    margin-top: 30px;
+    color: #444;
+}
+
+.center_content #nav{
+    font-size: 14px;
+}
+
+.center_content #nav span{
+    font-size: 16px;
+    color: #444;
+}
+
+.center_content #nav a{
+    margin: 0 3px;
+}
+
+.center_content #nav ul{
+    position: absolute;
+    right: 22px;
+    display: inline-block;
+}
+
+.detail_content{
+    min-height: 500px;
+    font-size: 15px;
+    background-color: white;
+    padding:20px;
+    color:#444;
+    font-family: -apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif,SimHei,SimSun;
+}
+
+.detail_content img{
+    margin:24px 0;
+}
+
+.detail_content pre{
+    font-size: 16px;
+}
+
+/*进度条*/
+progress {
+    /* Positioning */
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    /* Dimensions */
+    width: 100%;
+    height: 3px;
+
+    /* Reset the appearance */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+        appearance: none;
+
+    /* Get rid of the default border in Firefox/Opera. */
+    border: none;
+
+    /* Progress bar container for Firefox/IE10+ */
+    background-color: transparent;
+
+    /* Progress bar value for IE10+ */
+    color: #ddd;
+    z-index: 100;
+}
+
+progress::-webkit-progress-bar {
+    background-color: transparent;
+}
+
+progress::-webkit-progress-value {
+    background-color: #ddd;
+}
+
+progress::-moz-progress-bar {
+    background-color: #ddd;
+}
+
+.progress-container {
+    width: 100%;
+    background-color: transparent;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    display: block;
+}
+.progress-bar {
+    background-color: #ddd;
+    width: 0%;
+    display: block;
+    height: inherit;
+}

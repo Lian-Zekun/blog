@@ -1,0 +1,46 @@
+{% load staticfiles %}
+{% load blog_extras %}
+{% load cache %}
+
+{% cache 86400 sidebar %}
+<div class="col-5 offset-1 col-lg-2 col-xl-3 offset-lg-0">
+    <div id="list_sidebar">
+        <div class="widget">
+            <form class="search-form" action="{% url 'blog:search' %}" method="get" role="search">
+                <input type="search" name="q" maxlength="20" placeholder="Search">
+            </form>
+        </div>
+        {% get_categories %}
+        {% get_tags %}
+        <div class="widget">
+            <div class="widget-title"><i class="fas fa-tags"></i>&nbsp&nbsp友情链接</div>
+            <ul class="widget-list">
+                <li class="widget-list-item">
+                    <a class="widget-list-link hvr-forward no-underline"
+                       href="https://www.dusaiphoto.com/" target="_blank">
+                        杜赛的个人博客
+                    </a>
+                </li>
+                <li class="widget-list-item">
+                    <a class="widget-list-link hvr-forward no-underline"
+                       href="http://www.liujiangblog.com/" target="_blank">
+                        刘江的博客教程
+                    </a>
+                </li>
+                <li class="widget-list-item">
+                    <a class="widget-list-link hvr-forward no-underline"
+                       href="https://www.zmrenwu.com/" target="_blank">
+                        追梦人物的博客
+                    </a>
+                </li>
+                <li class="widget-list-item">
+                    <a class="widget-list-link hvr-forward no-underline"
+                       href="https://www.shihao.online/" target="_blank">
+                        史浩的博客
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endcache %}

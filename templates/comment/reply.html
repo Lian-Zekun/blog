@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load cache %}
+
+{% block title %}回复{{ parent_comment.user }}{% endblock title %}
+
+{% block content %}
+{% cache 86400 reply %}
+{% load mptt_tags %}
+<div class="col-md-7 offset-md-1">
+    <div class="mt-4" style="word-break: break-all">
+        <h4>{{ parent_comment.user }} 说：</h4>
+        <!-- 正文 -->
+
+        <p></p>
+        <p>{{ parent_comment.content|safe }}</p>
+        <p></p>
+    </div>
+    <hr>
+    <form action="{% url 'comment:reply_comment' article_id parent_comment.id %}" method="post" id="reply_form">
+        <div>
+            {% csrf_token %}
+            <h5>
+                发表评论：
+            </h5>
+            <!-- ckeditor 正文 -->
+            <div>
+                {{ comment_form.media }}
+                {{ comment_form.content }}
+            </div>
+        </div>
+
+        <input type="hidden" name="article_type" value=article>
+        <button id="comment_submit" type="submit" name="submit" hidden></button>
+    </form>
+    <div id="reply_on_submit_outer" class="mt-2">
+        <button class="btn btn-primary hvr-icon-bob" onclick="submit_comment()"
+                id="reply_on_submit"><i class="fas fa-paper-plane hvr-icon"></i> 发布
+        </button>
+        <button class="btn btn-secondary btn-sm ml-2" onclick="window.history.back(); return false;">
+            返回
+        </button>
+        <span id="comment_char_count" class="text-muted ml-2"></span>
+    </div>
+</div>
+{% endcache %}
+{% include '../blog/sidebar.html' %}
+
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'js/jquery.sticky-sidebar.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'ckeditor/ckeditor/plugins/prism/lib/prism/prism_patched.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/check_comment.js' %}" type="text/javascript"></script>
+{% endblock script %}

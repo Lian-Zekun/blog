@@ -1,0 +1,76 @@
+{% load staticfiles %}
+{% load notifications_tags %}
+{% load cache %}
+
+{% notifications_unread as unread_count %}
+<div id="header" class="col-md-10 offset-md-1 col-12">
+    {% cache 86400 header %}
+    <div class="site-name">
+        <h1 class="hidden">blog</h1>
+        <a id="logo" href="/.">blog</a>
+        <p class="description">生活以痛吻我，我却报之以歌。</p>
+    </div>
+    <div id="nav-menu">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" href="/." id="home"><i class="fa fa-home">首页</i></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="javascript:;" id="art"><i class="fa fa-archive">文章</i></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'about' %}" id="about"><i class="fa fa-user">About</i></a>
+        </li>
+    {% endcache %}
+        {% if user.is_authenticated %}
+        <li class="nav-item dropdown">
+            <a href="javascript:;" class="nav-link dropdown-toggle navHover2" id="navbarDropdown" role="button"
+               data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+                {% if unread_count %}
+                <svg viewBox="0 0 8 8"
+                     width="8px"
+                     height="8px">
+                    <circle cx="4" cy="4" r="4" fill="#ff6b6b"></circle>
+                </svg>
+                {% endif %}
+                <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" style="width:28px;"/>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navHoverItem2" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="{% url 'notice:list' %}">通知
+                    {% if unread_count %}
+                    <span class="badge badge-danger">{{ unread_count }}</span>
+                    {% endif %}
+                </a>
+                <a class="dropdown-item" href="javascript:;" data-toggle="modal" data-target="#logout">退出登录</a>
+            </div>
+        </li>
+        {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="/accounts/github/login/?process=login&next={{ request.path }}"
+            data-toggle="popover" data-placement="bottom"
+            data-trigger="hover" data-content="以GitHub账号登录"
+            >登录</a>
+        </li>
+        <!-- if 语句在这里结束 -->
+        {% endif %}
+    </ul>
+    </div>
+</div>
+<div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="logout"
+     style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <h5 class="modal-body">
+                确认退出吗？
+            </h5>
+            <div class="modal-footer">
+                <form method="post" action="/accounts/logout/?next={{ request.path }}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">退出登录</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
