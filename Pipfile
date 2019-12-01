@@ -72,6 +72,7 @@ MarkupSafe = "==1.1.1"
 PyJWT = "==1.7.1"
 Whoosh = "==2.7.4"
 xadmin = {file = "https://codeload.github.com/sshwsfc/xadmin/zip/django2"}
+gunicorn = "*"
 
 [requires]
 python_version = "3.7"
