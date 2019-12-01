@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81ee5147-9074-4417-a9a9-3ae55fa7c46c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_blog/settings/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_blog/settings/base.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_blog/settings/local.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_blog/settings/local.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_blog/settings/production.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_blog/settings/production.py" afterDir="false" />
-    </list>
+    <list default="true" id="81ee5147-9074-4417-a9a9-3ae55fa7c46c" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +49,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/my_blog/settings/base.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="206">
@@ -72,7 +67,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/my_blog/settings/production.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="120">
@@ -177,7 +172,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
+  <component name="ProjectFrameBounds">
     <option name="x" value="-23" />
     <option name="y" value="25" />
     <option name="width" value="1750" />
@@ -343,8 +338,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="585" y="60" width="1400" height="882" extended-state="0" />
-    <editor active="true" />
+    <frame x="-18" y="20" width="1400" height="882" extended-state="0" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19281524" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -713,10 +707,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/my_blog/settings/base.py">
+    <entry file="file://$PROJECT_DIR$/my_blog/settings/production.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="135" column="23" selection-start-line="135" selection-start-column="23" selection-end-line="135" selection-end-column="23" />
+        <state relative-caret-position="120">
+          <caret line="5" column="44" lean-forward="true" selection-start-line="5" selection-start-column="44" selection-end-line="5" selection-end-column="44" />
         </state>
       </provider>
     </entry>
@@ -727,10 +721,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/my_blog/settings/production.py">
+    <entry file="file://$PROJECT_DIR$/my_blog/settings/base.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="5" column="44" lean-forward="true" selection-start-line="5" selection-start-column="44" selection-end-line="5" selection-end-column="44" />
+        <state relative-caret-position="206">
+          <caret line="135" column="23" selection-start-line="135" selection-start-column="23" selection-end-line="135" selection-end-column="23" />
         </state>
       </provider>
     </entry>
